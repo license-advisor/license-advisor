@@ -1,0 +1,24 @@
+schema_version: "0.1.0"
+meta:
+  notes: "Fixture context for closed-source paid SaaS."
+project:
+  name: fixture-saas-agpl
+  delivery: hosted_saas
+  commercial: yes
+  audience: third_parties
+  source_visibility: closed
+  customer_distribution: none
+  network_access: true
+  modifies_dependencies: unknown
+  linking_model: unknown
+  target_platforms:
+    - web
+    - server
+  dependency_scopes_in_scope:
+    - production
+policy:
+  fail_on:
+    - conflict
+  warn_on:
+    - red_flag
+    - review_required

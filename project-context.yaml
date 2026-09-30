@@ -1,0 +1,25 @@
+schema_version: 0.1.0
+meta:
+  created_at: 2026-09-30T18:48:39.442Z
+  updated_at: 2026-09-30T19:01:12.065Z
+  notes: Configured via interactive CLI. Wrong intent produces wrong alerts.
+project:
+  name: license-advisor
+  delivery: open_source_project
+  commercial: no
+  audience: public
+  source_visibility: open
+  customer_distribution: source
+  network_access: false
+  modifies_dependencies: no
+  linking_model: dynamic_link
+  target_platforms:
+    - web
+  dependency_scopes_in_scope:
+    - production
+policy:
+  fail_on:
+    - conflict
+  warn_on:
+    - red_flag
+    - review_required

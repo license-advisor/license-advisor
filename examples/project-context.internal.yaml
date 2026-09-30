@@ -1,0 +1,24 @@
+schema_version: "0.1.0"
+meta:
+  notes: "Example: internal-only tool, no customer distribution."
+project:
+  name: example-internal-tool
+  delivery: internal_only
+  commercial: no
+  audience: internal_team
+  source_visibility: closed
+  customer_distribution: none
+  network_access: true
+  modifies_dependencies: no
+  linking_model: separate_process
+  target_platforms:
+    - server
+  dependency_scopes_in_scope:
+    - production
+    - development
+policy:
+  fail_on:
+    - conflict
+  warn_on:
+    - red_flag
+    - review_required

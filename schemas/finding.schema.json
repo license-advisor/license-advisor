@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://license-advisor.local/schemas/finding.schema.json",
+  "title": "Finding",
+  "description": "A deterministic license alert for one dependency under a declared project context. The LLM may explain this object; it must not invent it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "finding_id",
+    "dependency",
+    "license",
+    "outcome",
+    "rule_id",
+    "reason",
+    "assumptions",
+    "evidence",
+    "engine"
+  ],
+  "properties": {
+    "finding_id": {
+      "type": "string",
+      "description": "Stable id for this finding within a scan."
+    },
+    "dependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "relationship"],
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "purl": {
+          "type": "string",
+          "description": "Optional Package URL."
+        },
+        "relationship": {
+          "type": "string",
+          "enum": ["direct", "transitive"]
+        },
+        "scope": {
+          "type": "string",
+          "enum": ["production", "development", "optional", "peer", "unknown"]
+        },
+        "dependency_path": {
+          "type": "array",
+          "description": "Path from the root project to this dependency.",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "introduced_by": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "license": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expression"],
+      "properties": {
+        "expression": {
+          "type": "string",
+          "description": "SPDX license expression when known."
+        },
+        "spdx_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "declared": {
+          "type": "string"
+        },
+        "detected": {
+          "type": "string"
+        },
+        "concluded": {
+          "type": "string"
+        },
+        "detection_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "outcome": {
+      "$ref": "#/$defs/outcome"
+    },
+    "rule_id": {
+      "type": "string",
+      "description": "Id of the deterministic rule that produced this finding."
+    },
+    "reason": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["short"],
+      "properties": {
+        "short": {
+          "type": "string",
+          "description": "One or two sentences. Alert language, not legal judgment."
+        },
+        "detail": {
+          "type": "string"
+        }
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "description": "Project-context assumptions used for this finding. Must be echoed in user-facing output.",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "evidence.schema.json"
+      },
+      "minItems": 1
+    },
+    "limits": {
+      "type": "array",
+      "description": "Explicit statements about what this finding does not decide.",
+      "items": { "type": "string" }
+    },
+    "next_questions": {
+      "type": "array",
+      "description": "Optional clarifying questions when outcome is insufficient_context or review_required.",
+      "items": { "type": "string" }
+    },
+    "engine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ruleset_version", "scanner_version", "scanned_at"],
+      "properties": {
+        "ruleset_version": { "type": "string" },
+        "scanner_version": { "type": "string" },
+        "context_schema_version": { "type": "string" },
+        "scanned_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "clear",
+        "notice",
+        "red_flag",
+        "insufficient_context",
+        "review_required",
+        "conflict"
+      ]
+    }
+  }
+}

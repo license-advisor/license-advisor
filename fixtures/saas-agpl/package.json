@@ -1,0 +1,10 @@
+{
+  "name": "fixture-saas-agpl",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "express": "^4.18.2",
+    "plugin-x": "1.0.0",
+    "apache-helper": "1.0.0"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "name": "license-advisor",
+  "version": "0.1.0",
+  "description": "Open-source licensing advisor: alert on dependency license implications given shipping intent.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "license",
+    "licensing",
+    "spdx",
+    "compliance",
+    "mcp",
+    "npm",
+    "pnpm",
+    "yarn",
+    "pypi",
+    "open-source"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "license-advisor": "./dist/cli.js",
+    "license-advisor-mcp": "./dist/mcp/server.js"
+  },
+  "files": [
+    "dist",
+    "schemas",
+    "docs",
+    "examples",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/cli.ts",
+    "start": "tsx src/cli.ts",
+    "interactive": "tsx src/cli.ts interactive",
+    "context:show": "tsx src/cli.ts context show",
+    "context:validate": "tsx src/cli.ts context validate",
+    "deps:summary": "tsx src/cli.ts deps summary",
+    "licenses:summary": "tsx src/cli.ts licenses summary",
+    "mcp": "tsx src/mcp/server.ts",
+    "test": "tsx --test tests/**/*.test.ts",
+    "test:unit": "tsx --test tests/spdx.test.ts tests/context.test.ts tests/graph.test.ts tests/licenses.test.ts tests/pypi.test.ts tests/pnpm-yarn.test.ts",
+    "test:policy": "tsx --test tests/policy.test.ts",
+    "test:mcp": "tsx --test tests/mcp.test.ts",
+    "test:selfchecks": "tsx src/graph/npm-lockfile.selftest.ts && tsx src/licenses/resolve.selftest.ts && tsx src/policy/engine.selftest.ts && tsx src/mcp/tools.selftest.ts",
+    "init": "tsx src/cli.ts init",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.8.1",
+    "@modelcontextprotocol/sdk": "^1.31.0",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "picocolors": "^1.1.1",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}

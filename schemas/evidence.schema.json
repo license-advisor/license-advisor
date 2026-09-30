@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://license-advisor.local/schemas/evidence.schema.json",
+  "title": "Evidence",
+  "description": "One provenance item supporting a license conclusion or finding. Conflicting evidence must be preserved, never silently flattened.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "value"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "package_metadata",
+        "lockfile",
+        "license_file_detection",
+        "spdx_expression",
+        "manifest_field",
+        "registry_metadata",
+        "sbom",
+        "rule_reference",
+        "other"
+      ]
+    },
+    "value": {
+      "type": "string",
+      "description": "Observed value, e.g. an SPDX id or license file match."
+    },
+    "source": {
+      "type": "string",
+      "description": "Where the value came from, e.g. package.json, LICENSE, ClearlyDefined."
+    },
+    "path": {
+      "type": "string",
+      "description": "Optional filesystem or package path."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Technical detection confidence only — not legal certainty."
+    },
+    "url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "license-advisor": {
+      "command": "license-advisor-mcp"
+    }
+  }
+}

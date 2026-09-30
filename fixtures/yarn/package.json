@@ -1,0 +1,12 @@
+{
+  "name": "fixture-app",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "express": "^4.18.2",
+    "conflict-lib": "1.0.0"
+  },
+  "devDependencies": {
+    "left-pad": "^1.3.0"
+  }
+}

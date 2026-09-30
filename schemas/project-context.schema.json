@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://license-advisor.local/schemas/project-context.schema.json",
+  "title": "ProjectContext",
+  "description": "Declared shipping and commercialization intent for a software project. Used by the deterministic policy engine. Wrong answers produce wrong alerts — every material finding must restate these assumptions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "project"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "0.1.0",
+      "description": "Version of this context schema."
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "type": "string",
+          "description": "Optional human or tool identifier."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Free-form notes. Not used by the rule engine."
+        }
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "delivery",
+        "commercial",
+        "source_visibility",
+        "customer_distribution",
+        "network_access"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Optional project display name."
+        },
+        "delivery": {
+          "type": "string",
+          "description": "Primary way the software is delivered to users or customers.",
+          "enum": [
+            "hosted_saas",
+            "mobile_app",
+            "desktop_app",
+            "on_premise",
+            "library_sdk",
+            "cli_tool",
+            "internal_only",
+            "client_deliverable",
+            "embedded_firmware",
+            "open_source_project",
+            "other"
+          ]
+        },
+        "commercial": {
+          "type": "string",
+          "description": "Whether the project is commercial.",
+          "enum": ["yes", "no", "undecided"]
+        },
+        "audience": {
+          "type": "string",
+          "description": "Who primarily uses or receives the software.",
+          "enum": [
+            "self",
+            "internal_team",
+            "third_parties",
+            "public",
+            "mixed",
+            "unknown"
+          ]
+        },
+        "source_visibility": {
+          "type": "string",
+          "description": "Intended visibility of the project's own source code.",
+          "enum": ["closed", "source_available", "open", "undecided"]
+        },
+        "customer_distribution": {
+          "type": "string",
+          "description": "Whether customers or third parties receive executables, binaries, or source.",
+          "enum": ["none", "binaries", "source", "binaries_and_source", "some_components", "unknown"]
+        },
+        "network_access": {
+          "type": "boolean",
+          "description": "Whether users interact with the software over a network."
+        },
+        "modifies_dependencies": {
+          "type": "string",
+          "description": "Whether open-source dependencies are modified.",
+          "enum": ["yes", "no", "unknown"]
+        },
+        "linking_model": {
+          "type": "string",
+          "description": "Optional architecture hint where legally relevant to rule packs.",
+          "enum": [
+            "unknown",
+            "separate_process",
+            "dynamic_link",
+            "static_link",
+            "source_incorporation",
+            "mixed"
+          ]
+        },
+        "target_platforms": {
+          "type": "array",
+          "description": "Optional platform hints.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "web",
+              "ios",
+              "android",
+              "windows",
+              "macos",
+              "linux",
+              "server",
+              "embedded",
+              "other"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "dependency_scopes_in_scope": {
+          "type": "array",
+          "description": "Which dependency scopes the engine should evaluate. Defaults to production runtime if omitted.",
+          "items": {
+            "type": "string",
+            "enum": ["production", "development", "optional", "peer"]
+          },
+          "uniqueItems": true,
+          "default": ["production"]
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional local thresholds. Defaults are conservative.",
+      "properties": {
+        "fail_on": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/outcome"
+          },
+          "uniqueItems": true,
+          "default": ["conflict"]
+        },
+        "warn_on": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/outcome"
+          },
+          "uniqueItems": true,
+          "default": ["red_flag", "review_required"]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "clear",
+        "notice",
+        "red_flag",
+        "insufficient_context",
+        "review_required",
+        "conflict"
+      ]
+    }
+  }
+}

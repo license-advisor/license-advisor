@@ -1,0 +1,65 @@
+{
+  "finding_id": "finding-001",
+  "dependency": {
+    "name": "example-package",
+    "version": "2.1.0",
+    "relationship": "transitive",
+    "scope": "production",
+    "dependency_path": ["app", "framework-plugin", "example-package"],
+    "introduced_by": ["framework-plugin"]
+  },
+  "license": {
+    "expression": "AGPL-3.0-only",
+    "spdx_ids": ["AGPL-3.0-only"],
+    "declared": "AGPL-3.0-only",
+    "detected": "AGPL-3.0-only",
+    "concluded": "AGPL-3.0-only",
+    "detection_confidence": 0.99
+  },
+  "outcome": "red_flag",
+  "rule_id": "AGPL_NETWORK_001",
+  "reason": {
+    "short": "Under a closed-source hosted SaaS context, AGPL's network-interaction condition deserves attention before commercialization.",
+    "detail": "This package is transitive and arrives through framework-plugin. The alert assumes network-accessible use and a closed-source posture."
+  },
+  "assumptions": [
+    "delivery=hosted_saas",
+    "source_visibility=closed",
+    "network_access=true",
+    "customer_distribution=none"
+  ],
+  "evidence": [
+    {
+      "type": "package_metadata",
+      "value": "AGPL-3.0-only",
+      "source": "package.json license field",
+      "confidence": 0.99
+    },
+    {
+      "type": "license_file_detection",
+      "value": "AGPL-3.0-only",
+      "source": "LICENSE",
+      "path": "node_modules/example-package/LICENSE",
+      "confidence": 0.998
+    },
+    {
+      "type": "rule_reference",
+      "value": "AGPL_NETWORK_001",
+      "source": "ruleset"
+    }
+  ],
+  "limits": [
+    "This is a red flag for review, not a legal determination.",
+    "Architecture details such as process isolation or modification status may change the analysis."
+  ],
+  "next_questions": [
+    "Is this dependency modified?",
+    "Is it isolated as a separate service/process?"
+  ],
+  "engine": {
+    "ruleset_version": "0.1.0",
+    "scanner_version": "0.0.0-dev",
+    "context_schema_version": "0.1.0",
+    "scanned_at": "2026-09-30T17:00:00Z"
+  }
+}
