@@ -155,13 +155,19 @@ Step-by-step: [`docs/quickstart.md`](docs/quickstart.md)
 
 ## Use it with your AI coding agent
 
-Not in the official Cursor Marketplace yet. Until then, install MCP like this (no need to clone the repo for everyday use):
+Same MCP server everywhere. Node.js 20+ required. No need to clone the repo for everyday use.
 
-### One-click (Cursor)
+Shared launch command:
+
+```text
+npx -y --package=github:license-advisor/license-advisor license-advisor-mcp
+```
+
+### Cursor
 
 [![Add to Cursor](https://img.shields.io/badge/Add%20to-Cursor-163A5F?style=for-the-badge)](https://cursor.com/en/install-mcp?name=license-advisor&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIi0tcGFja2FnZT1naXRodWI6bGljZW5zZS1hZHZpc29yL2xpY2Vuc2UtYWR2aXNvciIsImxpY2Vuc2UtYWR2aXNvci1tY3AiXX0%3D)
 
-Or paste into the app's `.cursor/mcp.json` (or Cursor user MCP settings):
+Or put this in `.cursor/mcp.json` / Cursor MCP settings:
 
 ```json
 {
@@ -178,9 +184,63 @@ Or paste into the app's `.cursor/mcp.json` (or Cursor user MCP settings):
 }
 ```
 
-Cursor will fetch the package from GitHub via `npx` on first run (Node.js 20+ required).
+### Claude Desktop
 
-Restart MCP, then ask in plain language:
+Edit `claude_desktop_config.json` (Settings → Developer → Edit Config), then fully quit and reopen Claude:
+
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "license-advisor": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "--package=github:license-advisor/license-advisor",
+        "license-advisor-mcp"
+      ]
+    }
+  }
+}
+```
+
+If Claude cannot find `npx`, set `command` to the absolute path from `which npx` / `where npx`.
+
+### Claude Code
+
+```bash
+claude mcp add --transport stdio license-advisor -- \
+  npx -y --package=github:license-advisor/license-advisor license-advisor-mcp
+```
+
+Then check with `/mcp`. Docs: [code.claude.com/docs/en/mcp](https://code.claude.com/docs/en/mcp)
+
+### OpenAI Codex
+
+CLI:
+
+```bash
+codex mcp add license-advisor -- \
+  npx -y --package=github:license-advisor/license-advisor license-advisor-mcp
+```
+
+Or in `~/.codex/config.toml` (or project `.codex/config.toml`):
+
+```toml
+[mcp_servers.license-advisor]
+command = "npx"
+args = [
+  "-y",
+  "--package=github:license-advisor/license-advisor",
+  "license-advisor-mcp"
+]
+```
+
+Docs: [Model Context Protocol in Codex](https://developers.openai.com/codex/mcp/)
+
+### Example asks (any client)
 
 ```text
 I'm shipping a paid closed-source SaaS. Scan this project for licensing red flags.

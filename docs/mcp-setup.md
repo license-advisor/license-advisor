@@ -159,19 +159,77 @@ npm install -D github:license-advisor/license-advisor
 
 ---
 
-## Claude Code / other MCP clients
+## Claude Desktop
 
-```bash
-license-advisor-mcp
+Same stdio shape as the official MCP local-server guide.
+
+1. Open Settings → Developer → Edit Config (`claude_desktop_config.json`)
+2. Merge the `mcpServers` entry (do not wipe unrelated servers)
+3. Fully quit and reopen Claude Desktop
+
+Paths:
+
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+Example: [`../examples/mcp.claude-desktop.json`](../examples/mcp.claude-desktop.json)
+
+```json
+{
+  "mcpServers": {
+    "license-advisor": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "--package=github:license-advisor/license-advisor",
+        "license-advisor-mcp"
+      ]
+    }
+  }
+}
 ```
 
-or:
+If the GUI cannot find `npx`, set `command` to the absolute path from `which npx` / `where npx`.
+
+Reference: [Connect to local MCP servers](https://modelcontextprotocol.io/docs/develop/connect-local-servers)
+
+---
+
+## Claude Code
+
+From [Claude Code MCP docs](https://code.claude.com/docs/en/mcp):
 
 ```bash
-node /path/to/license-advisor/dist/mcp/server.js
+claude mcp add --transport stdio license-advisor -- \
+  npx -y --package=github:license-advisor/license-advisor license-advisor-mcp
 ```
 
-Ensure Node 20+ is on `PATH`.
+The `--` separates Claude Code flags from the server command. Verify with `/mcp`.
+
+---
+
+## OpenAI Codex
+
+From [Codex MCP docs](https://developers.openai.com/codex/mcp/):
+
+```bash
+codex mcp add license-advisor -- \
+  npx -y --package=github:license-advisor/license-advisor license-advisor-mcp
+```
+
+Or edit `~/.codex/config.toml` / project `.codex/config.toml`:
+
+Example: [`../examples/mcp.codex.toml`](../examples/mcp.codex.toml)
+
+```toml
+[mcp_servers.license-advisor]
+command = "npx"
+args = [
+  "-y",
+  "--package=github:license-advisor/license-advisor",
+  "license-advisor-mcp"
+]
+```
 
 ---
 
