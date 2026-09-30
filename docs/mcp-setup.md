@@ -34,7 +34,32 @@ The tools return structured alerts. The agent should explain them calmly.
 
 ## Install the CLI / MCP binary
 
-From this repo (recommended while developing):
+### Recommended for end users (no local clone)
+
+MCP config uses `npx` against this GitHub repo:
+
+```json
+{
+  "mcpServers": {
+    "license-advisor": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "--package=github:license-advisor/license-advisor",
+        "license-advisor-mcp"
+      ]
+    }
+  }
+}
+```
+
+One-click Cursor install:
+
+[Add License Advisor to Cursor](https://cursor.com/en/install-mcp?name=license-advisor&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIi0tcGFja2FnZT1naXRodWI6bGljZW5zZS1hZHZpc29yL2xpY2Vuc2UtYWR2aXNvciIsImxpY2Vuc2UtYWR2aXNvci1tY3AiXX0%3D)
+
+Requires Node.js 20+. First run may take a moment while `npx` fetches the package.
+
+### From this repo (contributors / local hack)
 
 ```bash
 npm install
@@ -70,9 +95,13 @@ Tip: prefer passing `project_root` in each tool call. Then you often do not need
 
 ---
 
-## Cursor (no hardcoded absolute paths)
+## Cursor
 
-### Option A - after `npm link` (simplest)
+### Option A - npx from GitHub (recommended today)
+
+Same config as [examples/mcp.cursor.json](../examples/mcp.cursor.json). No marketplace listing required.
+
+### Option B - after `npm link`
 
 In the **target app** `.cursor/mcp.json` (or Cursor user MCP settings):
 
@@ -88,7 +117,7 @@ In the **target app** `.cursor/mcp.json` (or Cursor user MCP settings):
 
 Ask the agent to scan with `project_root` set to the workspace folder.
 
-### Option B - run from this checkout via `cwd`
+### Option C - run from this checkout via `cwd`
 
 ```json
 {
@@ -96,7 +125,7 @@ Ask the agent to scan with `project_root` set to the workspace folder.
     "license-advisor": {
       "command": "node",
       "args": ["dist/mcp/server.js"],
-      "cwd": "../licenses-saas"
+      "cwd": "../license-advisor"
     }
   }
 }
@@ -104,10 +133,10 @@ Ask the agent to scan with `project_root` set to the workspace folder.
 
 Use a relative `cwd` from the app repo, or an absolute path only if you must.
 
-### Option C - file dependency inside the app
+### Option D - file dependency inside the app
 
 ```bash
-npm install -D ../licenses-saas
+npm install -D github:license-advisor/license-advisor
 ```
 
 ```json
@@ -121,7 +150,12 @@ npm install -D ../licenses-saas
 }
 ```
 
-Example checked into this repo: [`../examples/mcp.cursor.json`](../examples/mcp.cursor.json)
+### Marketplace status
+
+- **Official Cursor Marketplace:** not listed yet (needs plugin packaging + review).
+- **Until then:** use the npx / Add to Cursor flow above.
+- **Community:** [cursor.directory](https://cursor.directory) is optional discovery, separate from Cursor's official marketplace.
+- **Later:** `npm publish` will allow `npx -y license-advisor-mcp` without the GitHub package URL.
 
 ---
 

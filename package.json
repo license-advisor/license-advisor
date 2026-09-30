@@ -4,6 +4,14 @@
   "description": "Open-source licensing advisor: alert on dependency license implications given shipping intent.",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/license-advisor/license-advisor.git"
+  },
+  "homepage": "https://github.com/license-advisor/license-advisor#readme",
+  "bugs": {
+    "url": "https://github.com/license-advisor/license-advisor/issues"
+  },
   "keywords": [
     "license",
     "licensing",

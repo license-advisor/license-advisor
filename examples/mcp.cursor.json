@@ -1,7 +1,12 @@
 {
   "mcpServers": {
     "license-advisor": {
-      "command": "license-advisor-mcp"
+      "command": "npx",
+      "args": [
+        "-y",
+        "--package=github:license-advisor/license-advisor",
+        "license-advisor-mcp"
+      ]
     }
   }
 }

@@ -155,17 +155,30 @@ Step-by-step: [`docs/quickstart.md`](docs/quickstart.md)
 
 ## Use it with your AI coding agent
 
-After `npm link`, add this to the app's `.cursor/mcp.json` (or your Cursor MCP settings):
+Not in the official Cursor Marketplace yet. Until then, install MCP like this (no need to clone the repo for everyday use):
+
+### One-click (Cursor)
+
+[![Add to Cursor](https://img.shields.io/badge/Add%20to-Cursor-163A5F?style=for-the-badge)](https://cursor.com/en/install-mcp?name=license-advisor&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIi0tcGFja2FnZT1naXRodWI6bGljZW5zZS1hZHZpc29yL2xpY2Vuc2UtYWR2aXNvciIsImxpY2Vuc2UtYWR2aXNvci1tY3AiXX0%3D)
+
+Or paste into the app's `.cursor/mcp.json` (or Cursor user MCP settings):
 
 ```json
 {
   "mcpServers": {
     "license-advisor": {
-      "command": "license-advisor-mcp"
+      "command": "npx",
+      "args": [
+        "-y",
+        "--package=github:license-advisor/license-advisor",
+        "license-advisor-mcp"
+      ]
     }
   }
 }
 ```
+
+Cursor will fetch the package from GitHub via `npx` on first run (Node.js 20+ required).
 
 Restart MCP, then ask in plain language:
 
@@ -187,7 +200,9 @@ Update my shipping intent for hosted SaaS (commercial, closed source, no custome
 
 The agent should call License Advisor tools (`scan_project`, `explain_finding`, and related). It should not invent a license table on its own.
 
-Full MCP setup: [`docs/mcp-setup.md`](docs/mcp-setup.md)
+Full MCP setup (local link, checkout, troubleshooting): [`docs/mcp-setup.md`](docs/mcp-setup.md)
+
+Later: npm publish + official Cursor Marketplace plugin. Community listings can also go on [cursor.directory](https://cursor.directory).
 
 ---
 
